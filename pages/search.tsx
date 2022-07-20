@@ -2,7 +2,6 @@ import type { GetServerSideProps } from "next";
 import {
   Configure,
   RefinementList,
-  Hits,
   InstantSearch,
   Pagination,
   SearchBox,
@@ -24,12 +23,12 @@ import { Restaurant } from "../types/restaurants";
 import {
   Box,
   Button,
-  Center,
-  Container,
+  Collapse,
   Flex,
   Grid,
+  Show,
   Text,
-  VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useDeleteRestaurant } from "../hooks/restaurants";
 import { DeleteIcon } from "@chakra-ui/icons";
@@ -104,7 +103,7 @@ function Results() {
 
 function Filters() {
   return (
-    <Flex flex="1 1" maxW={"300px"} flexDirection="column">
+    <Flex flexDirection="column">
       <ClearRefinements />
       <CurrentRefinements />
 
@@ -118,6 +117,28 @@ function Filters() {
       </Text>
       <StarRatingMenu />
     </Flex>
+  );
+}
+
+function FilterWrapper() {
+  const { isOpen, onToggle } = useDisclosure();
+
+  // Unfortunately we loose filter state when changing the window size because
+  // the Filter component is unmounted... Maybe using portals could fix the issue
+  return (
+    <>
+      <Show above="md">
+        <Filters />
+      </Show>
+      <Show below="md">
+        <Button onClick={onToggle}>Click Me</Button>
+        <Collapse in={isOpen} animateOpacity>
+          <Box p="40px" mt="4" bg="pink.100" rounded="md" shadow="md">
+            <Filters />
+          </Box>
+        </Collapse>
+      </Show>
+    </>
   );
 }
 
@@ -201,12 +222,12 @@ export default function SearchPage({ serverState, url }: SearchPageProps) {
                   />
                 </Box>
                 <Box gridArea={"filters"}>
-                  <Filters />
+                  <FilterWrapper />
                 </Box>
                 <Box gridArea={"results"}>
                   <Results />
                 </Box>
-                <Box gridArea={"pagination"}>
+                <Box gridArea={"pagination"} justifyContent="center">
                   <Pagination />
                 </Box>
               </Grid>

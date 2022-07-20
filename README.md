@@ -54,4 +54,6 @@ Instead of uploading data by hand or via a script, why not allowing to upload th
 
 - I invested more time in the search experience and results than on the visual side... Globally, Chakra (and its resets) don't play well with readily made styles for Algolia components. In a real world application, I believe I would use lower levels hooks and build a custom UI for the components. This would ensure a higher fidelity to potential brand aspects instead of having to work "around" Algolia styles
 
-- Have not invested much time in make the design responsive and the biggest short coming is the filters area in the search page. What I would probably do to improve this case would be
+- Changing window size in search page while having filters active makes page loose filters because <Filters> component is unmounted from the DOM.
+
+- Have not investigated how to have more robust tests by mocking Algolia client to make them more reproductible and prevent using Algolia quota for tests
