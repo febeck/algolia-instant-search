@@ -37,7 +37,9 @@ export function Layout({ children }: LayoutProps) {
             <HeaderLink href="/search">Search</HeaderLink>
             <HeaderLink href="/restaurants/create">Create</HeaderLink>
             <HeaderLink href="/restaurants/upload">Upload</HeaderLink>
-            <ChakraLink href="TODO: add the github repo">Github</ChakraLink>
+            <ChakraLink href="https://github.com/febeck/algolia-instant-search">
+              Github
+            </ChakraLink>
           </HStack>
         </Container>
       </Box>
