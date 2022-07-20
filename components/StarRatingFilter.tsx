@@ -1,5 +1,5 @@
-import { Checkbox } from "@chakra-ui/react";
-import React, { Fragment } from "react";
+import { Box, Checkbox } from "@chakra-ui/react";
+import React from "react";
 import { useNumericMenu } from "react-instantsearch-hooks-web";
 
 export function StarRatingMenu() {
@@ -21,9 +21,9 @@ export function StarRatingMenu() {
   }
 
   return (
-    <ul>
+    <Box as={"ul"} sx={{ listStyle: "none" }}>
       {numericMenu.items.map((item) => (
-        <li key={item.label}>
+        <Box as={"li"} key={item.label}>
           <Checkbox
             name={item.label}
             isChecked={item.isRefined}
@@ -32,8 +32,8 @@ export function StarRatingMenu() {
           >
             {item.label}
           </Checkbox>
-        </li>
+        </Box>
       ))}
-    </ul>
+    </Box>
   );
 }

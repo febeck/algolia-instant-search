@@ -22,6 +22,7 @@ import { Layout } from "../components/Layout";
 import { searchClient } from "../helpers/algolia";
 import { Restaurant } from "../types/restaurants";
 import {
+  Box,
   Button,
   Center,
   Container,
@@ -110,51 +111,53 @@ export default function SearchPage({ serverState, url }: SearchPageProps) {
     <QueryClientProvider client={queryClient}>
       <InstantSearchSSRProvider {...serverState}>
         <Layout>
-          <InstantSearch
-            searchClient={searchClient}
-            indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_RESTAURANTS!}
-            routing={{
-              router: history({
-                getLocation() {
-                  if (typeof window === "undefined") {
-                    return new URL(url!) as unknown as Location;
-                  }
+          <Box px={4}>
+            <InstantSearch
+              searchClient={searchClient}
+              indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_RESTAURANTS!}
+              routing={{
+                router: history({
+                  getLocation() {
+                    if (typeof window === "undefined") {
+                      return new URL(url!) as unknown as Location;
+                    }
 
-                  return window.location;
-                },
-              }),
-              stateMapping: {
-                stateToRoute(uiState) {
-                  const indexUiState =
-                    uiState[
-                      process.env.NEXT_PUBLIC_ALGOLIA_INDEX_RESTAURANTS!
-                    ] || {};
+                    return window.location;
+                  },
+                }),
+                stateMapping: {
+                  stateToRoute(uiState) {
+                    const indexUiState =
+                      uiState[
+                        process.env.NEXT_PUBLIC_ALGOLIA_INDEX_RESTAURANTS!
+                      ] || {};
 
-                  return {
-                    q: indexUiState.query,
-                    foodType: indexUiState.refinementList?.food_type,
-                    starRate: indexUiState.numericMenu?.stars_count,
-                  } as UiState;
+                    return {
+                      q: indexUiState.query,
+                      foodType: indexUiState.refinementList?.food_type,
+                      starRate: indexUiState.numericMenu?.stars_count,
+                    } as UiState;
+                  },
+                  routeToState(routeState) {
+                    return {
+                      [process.env.NEXT_PUBLIC_ALGOLIA_INDEX_RESTAURANTS!]: {
+                        query: routeState.q,
+                        refinementList: {
+                          food_type: routeState.foodType,
+                        },
+                        numericMenu: {
+                          stars_count: routeState.starRate,
+                        },
+                      } as UiState,
+                    };
+                  },
                 },
-                routeToState(routeState) {
-                  return {
-                    [process.env.NEXT_PUBLIC_ALGOLIA_INDEX_RESTAURANTS!]: {
-                      query: routeState.q,
-                      refinementList: {
-                        food_type: routeState.foodType,
-                      },
-                      numericMenu: {
-                        stars_count: routeState.starRate,
-                      },
-                    } as UiState,
-                  };
-                },
-              },
-            }}
-          >
-            <Configure hitsPerPage={24} />
-            <div className="search-panel">
-              {/* <div className="search-panel__filters">
+              }}
+            >
+              <Configure hitsPerPage={12} />
+
+              <Flex gap={4} flexDirection={"row"}>
+                <Flex flex="1 1" maxW={"300px"} flexDirection="column">
                   <ClearRefinements />
                   <CurrentRefinements />
 
@@ -167,23 +170,24 @@ export default function SearchPage({ serverState, url }: SearchPageProps) {
                     Star rating
                   </Text>
                   <StarRatingMenu />
-                </div> */}
+                </Flex>
 
-              <VStack flex="3 1" align="stretch" spacing={4}>
-                <SearchBox
-                  placeholder=""
-                  className="searchbox"
-                  id="mainSearchBox"
-                />
+                <VStack flex="3 1" align="stretch" spacing={4}>
+                  <SearchBox
+                    placeholder=""
+                    className="searchbox"
+                    id="mainSearchBox"
+                  />
 
-                <Results />
+                  <Results />
 
-                <Center className="pagination">
-                  <Pagination />
-                </Center>
-              </VStack>
-            </div>
-          </InstantSearch>
+                  <Center className="pagination">
+                    <Pagination />
+                  </Center>
+                </VStack>
+              </Flex>
+            </InstantSearch>
+          </Box>
         </Layout>
       </InstantSearchSSRProvider>
     </QueryClientProvider>
