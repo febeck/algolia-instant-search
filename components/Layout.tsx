@@ -45,7 +45,7 @@ export function Layout({ children }: LayoutProps) {
       </Box>
 
       <Box py={4} as="main" flexGrow={1}>
-        {children}
+        <Container maxW={"container.xl"}>{children}</Container>
       </Box>
     </>
   );

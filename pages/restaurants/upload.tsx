@@ -1,12 +1,4 @@
-import {
-  Button,
-  Container,
-  FormControl,
-  FormLabel,
-  Input,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
 import { Layout } from "../../components/Layout";
 import { useUploadRestaurants } from "../../hooks/restaurants";
@@ -44,34 +36,32 @@ export default function UploadPage() {
 
   return (
     <Layout>
-      <Container maxW="container.xl">
-        <form onSubmit={handleSubmit}>
-          <VStack gap={6}>
-            <Text fontSize="lg" fontWeight="bold">
-              You can upload a file of up to 10MB and it will replace current
-              content on Agolia index
-            </Text>
+      <form onSubmit={handleSubmit}>
+        <VStack gap={6}>
+          <Text fontSize="lg" fontWeight="bold">
+            You can upload a file of up to 10MB and it will replace current
+            content on Agolia index
+          </Text>
 
-            <FormControl isRequired>
-              <FormLabel htmlFor="file">File</FormLabel>
-              <input
-                ref={fileInputRef}
-                type="file"
-                id="file"
-                name="file"
-                accept=".json"
-              />
-            </FormControl>
-            <Button
-              type="submit"
-              colorScheme="pink"
-              isLoading={uploadMutation.isLoading}
-            >
-              Submit
-            </Button>
-          </VStack>
-        </form>
-      </Container>
+          <FormControl isRequired>
+            <FormLabel htmlFor="file">File</FormLabel>
+            <input
+              ref={fileInputRef}
+              type="file"
+              id="file"
+              name="file"
+              accept=".json"
+            />
+          </FormControl>
+          <Button
+            type="submit"
+            colorScheme="pink"
+            isLoading={uploadMutation.isLoading}
+          >
+            Submit
+          </Button>
+        </VStack>
+      </form>
     </Layout>
   );
 }

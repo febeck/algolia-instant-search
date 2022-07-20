@@ -10,7 +10,7 @@ describe('search page', () => {
     cy.url({ decode: true })
     .should('contain', `q=${query}`)
     .should('contain', `foodType[0]=${query}`)
-    .should('contain', 'starRate=3%3A5') // it cannot decode the ":" character...
+    .should('contain', 'starRate=3%3A') // it cannot decode the ":" character...
   })
 })
 

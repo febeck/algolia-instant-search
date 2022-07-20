@@ -58,12 +58,6 @@ em {
   font-size: 1.2rem;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
-}
-
 .search-panel {
   display: flex;
   gap: 1rem;
@@ -71,6 +65,7 @@ em {
 
 .search-panel__filters {
   flex: 1;
+  max-width: 300px;
 }
 
 .search-panel__results {
@@ -84,4 +79,22 @@ em {
 .pagination {
   margin: 2rem auto;
   text-align: center;
+}
+
+.ais-CurrentRefinements-list {
+  display: block;
+}
+
+.ais-CurrentRefinements-item {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 8px 0px;
+}
+
+.ais-CurrentRefinements-label {
+  font-weight: bold;
+}
+
+.ais-CurrentRefinements-category {
+  align-items: center;
 }
