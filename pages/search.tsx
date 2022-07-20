@@ -102,6 +102,25 @@ function Results() {
   );
 }
 
+function Filters() {
+  return (
+    <Flex flex="1 1" maxW={"300px"} flexDirection="column">
+      <ClearRefinements />
+      <CurrentRefinements />
+
+      <Text fontSize="xl" fontWeight="bold" mt={4}>
+        Food type
+      </Text>
+      <RefinementList attribute="food_type" showMore searchable />
+
+      <Text fontSize="xl" fontWeight="bold" mt={4}>
+        Star rating
+      </Text>
+      <StarRatingMenu />
+    </Flex>
+  );
+}
+
 export default function SearchPage({ serverState, url }: SearchPageProps) {
   const [queryClient] = useState(() => new QueryClient());
 
@@ -156,36 +175,41 @@ export default function SearchPage({ serverState, url }: SearchPageProps) {
             >
               <Configure hitsPerPage={12} />
 
-              <Flex gap={4} flexDirection={"row"}>
-                <Flex flex="1 1" maxW={"300px"} flexDirection="column">
-                  <ClearRefinements />
-                  <CurrentRefinements />
+              <Grid
+                gridTemplateAreas={{
+                  base: `
+                  "searchBar"
+                  "filters"
+                  "results"
+                  "pagination"
+                `,
 
-                  <Text fontSize="xl" fontWeight="bold" mt={4}>
-                    Food type
-                  </Text>
-                  <RefinementList attribute="food_type" showMore searchable />
-
-                  <Text fontSize="xl" fontWeight="bold" mt={4}>
-                    Star rating
-                  </Text>
-                  <StarRatingMenu />
-                </Flex>
-
-                <VStack flex="3 1" align="stretch" spacing={4}>
+                  md: `
+                  "filters searchBar"
+                  "filters results"
+                  "filters pagination"
+                `,
+                }}
+                gridTemplateColumns={{ base: "1fr", md: "300px 1fr" }}
+                gap={4}
+              >
+                <Box gridArea={"searchBar"}>
                   <SearchBox
                     placeholder=""
                     className="searchbox"
                     id="mainSearchBox"
                   />
-
+                </Box>
+                <Box gridArea={"filters"}>
+                  <Filters />
+                </Box>
+                <Box gridArea={"results"}>
                   <Results />
-
-                  <Center className="pagination">
-                    <Pagination />
-                  </Center>
-                </VStack>
-              </Flex>
+                </Box>
+                <Box gridArea={"pagination"}>
+                  <Pagination />
+                </Box>
+              </Grid>
             </InstantSearch>
           </Box>
         </Layout>

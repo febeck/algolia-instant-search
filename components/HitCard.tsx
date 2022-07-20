@@ -1,12 +1,8 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  Button,
-  Link as ChakraLink,
-  useMediaQuery,
-} from "@chakra-ui/react";
+import { Box, Button, Link as ChakraLink } from "@chakra-ui/react";
 import type { Hit as AlgoliaHit } from "instantsearch.js";
 import { Highlight } from "react-instantsearch-hooks-web";
+import { useIsMdOrBigger } from "../hooks/mediaQuery";
 import { Restaurant } from "../types/restaurants";
 import { StarRating } from "./StarRating";
 
@@ -16,7 +12,7 @@ type HitCardProps = {
 };
 
 export function HitCard({ hit, children }: HitCardProps) {
-  const [isDesktop] = useMediaQuery("(min-width: 768px)");
+  const isDesktop = useIsMdOrBigger();
 
   return (
     <Box
