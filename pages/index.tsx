@@ -35,7 +35,6 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
     });
   }
 
-  console.log("👉 ~ country", country);
   if (country) {
     countryHits = await searchRestaurantIndex.search<Restaurant>("", {
       facetFilters: [`country:${country}`],

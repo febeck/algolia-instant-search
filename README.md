@@ -1,34 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Context
 
-## Getting Started
+Trying to build a simple experience with Algolia components to have real time search.
 
-First, run the development server:
+In addition to regular Algolia libraries I used
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+- Next.js for bootstraping the project, having good defaults for perf, DX, SSR as well as deployability via Vercel.
+- Chakra UI for some readily made components
+- Cypress for some smoke testing in the main user search flows
+- Prettier for formatting
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### API
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Uses Next.js serveless API routes to hide admin api keys and has routes for
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- delete entry
+- create entry
+- upload bulk data to replace current content
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Pages and features
 
-## Learn More
+#### Home
 
-To learn more about Next.js, take a look at the following resources:
+Has a clean and simple search bar where user can **search** for both restaurants and food types having all the results in the same autocomplete dropdown.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- clicking on a restaurant should redirect for example to a product page (not implemented)
+- clicking on a restaurant redirects the user to the search page with the correct filter
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+For the following section we SSR the results given user's location information to have an instant render of the results in the client side.
 
-## Deploy on Vercel
+Has a section for recomended restaurant around user location (based on Vercel's geolocation feature to get location and Algolia geo search to match restaurants)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Has a section for recomended restaurant in user's country (based on Vercel's geolocation feature and filter on country). Would need a VPN to simulate country given all restaurants in the dataset are in the US
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+#### Search
+
+Has a real time as type search result with refinement lists and numeric filters for score for each restaurant. Also has SSR in this page to ensure better performance and less CLS when user lands in the page.
+
+Given the big amount of food types, users can also search in that category to refine results.
+
+Also there's an effort made to clean the URL and have shorter and cleaner query params when sharing URL.
+
+Here we also leverage composability of of the HitCard component, adding the "Delete" button, not present in the home page. Given the delay when deleting an object from the index, and in spite of the refresh in the query upon deletion success, there's a hack to visually remove the element from the search results (which should disappear in a few seconds).
+
+#### Create
+
+User has a form where they can create a new restaurant entry. Form is pretty long and could definitely be improved by using some autocomplete library for the place and have this API feed us all the lengthy information about the place... This uses fully uncontrolled form inputs HTML basic validation for required fields.
+
+#### Upload
+
+Instead of uploading data by hand or via a script, why not allowing to upload the JSON file via the UI. This will replace all content in current index.

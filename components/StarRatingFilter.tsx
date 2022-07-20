@@ -21,18 +21,19 @@ export function StarRatingMenu() {
   }
 
   return (
-    <Fragment>
+    <ul>
       {numericMenu.items.map((item) => (
-        <div key={item.label}>
+        <li key={item.label}>
           <Checkbox
+            name={item.label}
             isChecked={item.isRefined}
             value={item.value}
             onChange={handleChange}
           >
             {item.label}
           </Checkbox>
-        </div>
+        </li>
       ))}
-    </Fragment>
+    </ul>
   );
 }

@@ -171,7 +171,11 @@ export default function SearchPage({ serverState, url }: SearchPageProps) {
                 </div>
 
                 <VStack flex="3 1" align="stretch" spacing={4}>
-                  <SearchBox placeholder="" className="searchbox" />
+                  <SearchBox
+                    placeholder=""
+                    className="searchbox"
+                    id="mainSearchBox"
+                  />
 
                   <Results />
 
